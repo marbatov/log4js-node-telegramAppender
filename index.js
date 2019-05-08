@@ -7,14 +7,16 @@ function stdoutAppender(layout, levels, config) {
 
     var silentLevel = levels.getLevel(config.silentAlertLevel);
     var audioLevel = levels.getLevel(config.audioAlertLevel);
-
     var botchat_params = {
         method: "GET",
+        //uri: "http://www.asoft21.ru",
         uri: "https://api.telegram.org/bot"+config.bottoken+"/sendMessage",
         qs: {
             chat_id: config.botchatid,
             parse_mode: "html"
-        }
+        },
+        proxy: config.proxy,
+        strictSSL: false
     };
     // This is the appender function itself
     const appender = (loggingEvent) => {
@@ -24,20 +26,20 @@ function stdoutAppender(layout, levels, config) {
             if (audioLevel.isLessThanOrEqualTo(loggingEvent.level.levelStr)) {
                 //console.log(`===== log telegram with sound`);
                 Object.assign(params.qs, {
-                    text: layout(loggingEvent),
+                    text: "#Log\n" + layout(loggingEvent),
                     disable_notification: false
                 });
                 request(params, (error, response, body) => {
                     if (error) {
                         console.log("Error sending to telegram:");
                         console.log(error);
-                    } /* else {
+                    }  else {
                         console.log("Message sent to telegram:");
                         console.log(body);
-                    }*/
+                    }
                 });
             } else {
-                //console.log(`===== log telegram quietly`);
+                console.log(`===== log telegram quietly`);
                 Object.assign(params.qs, {
                     text: layout(loggingEvent),
                     disable_notification: true
