@@ -15,7 +15,7 @@ npm install --save log4js
 
 Install log4js-node-telegramAppender:
 ```
-npm install --save "https://github.com/liangwp/log4js-node-telegramAppender/tarball/master"
+npm install --save "https://github.com/marbatov/log4js-node-telegramAppender/tarball/master"
 ```
 
 Sample usage:
@@ -31,7 +31,8 @@ log4js.configure({
             silentAlertLevel: 'info',
             audioAlertLevel: 'error',
             bottoken: <token>,
-            botchatid: <chatid>
+            botchatid: <chatid>,
+            proxy: <proxyURL>
         }
     },
     categories: { default: { appenders: ['colouredConsole', 'telegramAlert'], level: 'debug' } }
